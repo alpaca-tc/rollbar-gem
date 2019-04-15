@@ -64,11 +64,17 @@ module Rollbar
       end
 
       def trace_data(current_exception)
+        message = begin
+                    current_exception.message
+                  rescue
+                    '[scrubbed]'
+                  end
+
         {
           :frames => map_frames(current_exception),
           :exception => {
             :class => current_exception.class.name,
-            :message => current_exception.message
+            :message => message
           }
         }
       end
